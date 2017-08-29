@@ -1,0 +1,108 @@
+// wedged_droplet_WORKING.fe
+// Evolver data for drop of prescribed volume sitting in a wedge of corner angle alpha.
+// Contact angle with plane implemented with tension on bottom face of
+//   drop, instead of constraint edge integral.  This means that the tension
+//   must be set directly on the contact facets rather than just changing
+//   the angle variable.
+
+
+PARAMETER angle = 150                      //interior angle between plane and surface, degrees
+PARAMETER height = 1                       // initial height of cell
+PARAMETER halfalpha = 2.5                  // Corner half angle, degrees
+PARAMETER surfacelength = 5                // Corner surface length
+
+gravity_constant 0                          // start with gravity off
+
+#define WALLT  (-cos(angle*pi/180))
+#define WALLT2 (-cos(angle*pi/180))         // virtual tension of facet on plane
+#define deltaZ (surfacelength*tan(halfalpha*pi/180))
+
+constraint 1  /* the bottom table */
+formula: z = -y*tan(halfalpha*pi/180)
+energy:
+e1: -(WALLT*y)
+e2: 0
+e3: 0
+
+constraint 2  /* the top table */
+formula: z = height+y*tan(halfalpha*pi/180)
+energy:
+e1: -(WALLT*y)
+e2: 0
+e3: 0
+
+vertices
+1   0.0  0.0 0.0  constraint 1  /* 4 vertices on plane */
+2   1.0  0.0 0.0  constraint 1
+3   1.0  1.0 0.0  constraint 1
+4   0.0  1.0 0.0  constraint 1
+5   0.0  0.0 height  constraint 2 
+6   1.0  0.0 height  constraint 2 
+7   1.0  1.0 tan(halfalpha*pi/180) constraint 2 
+8   0.0  1.0 tan(halfalpha*pi/180) constraint 2 
+
+9   2.0  surfacelength -deltaZ                   fixed   /* for table bottom */
+10  2.0 -1.0            sin(halfalpha*pi/180)    fixed
+11 -1.0 -1.0            sin(halfalpha*pi/180)    fixed
+12 -1.0  surfacelength -deltaZ                   fixed
+
+13  2.0  surfacelength height+deltaZ                 fixed   /* for table top */
+14  2.0 -1.0           height-sin(halfalpha*pi/180)  fixed
+15 -1.0 -1.0           height-sin(halfalpha*pi/180)  fixed
+16 -1.0  surfacelength height+deltaZ                 fixed
+
+edges  /* given by endpoints and attribute */
+1   1 2    constraint 1 /* 4 edges on plane */
+2   2 3    constraint 1
+3   3 4    constraint 1
+4   4 1    constraint 1
+5   5 6    constraint 2 
+6   6 7    constraint 2 
+7   7 8    constraint 2 
+8   8 5    constraint 2 
+9   1 5   
+10  2 6  
+11  3 7 
+12  4 8
+13  9 10   fixed  no_refine /* for table top */
+14 10 11   fixed  no_refine
+15 11 12   fixed  no_refine
+16 12  9   fixed  no_refine
+17 13 14   fixed  no_refine /* for table top */
+18 14 15   fixed  no_refine
+19 15 16   fixed  no_refine
+20 16 13   fixed  no_refine
+
+faces  /* given by oriented edge loop */
+1   1 10 -5  -9  frontcolor lightblue backcolor black
+2   2 11 -6 -10  frontcolor lightblue backcolor black
+3   3 12 -7 -11  frontcolor lightblue backcolor black
+4   4  9 -8 -12  frontcolor lightblue backcolor black
+5   5  6  7   8  //tension WALLT2 constraint 2 
+6  -4 -3 -2  -1  //tension WALLT constraint 1
+7  13 14 15  16  tension 0 fixed no_refine frontcolor red backcolor lightgrey /* table top for display */
+8  17 18 19  20  tension 0 fixed no_refine frontcolor lightgrey backcolor red/* table top for display */
+
+bodies  /* one body, defined by its oriented faces */
+1   1 2 3 4 5   volume 1  density 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,15 +18,17 @@ referenced by drop #.
 import numpy as np
 import os, glob, math
 
-
-wrkdir = 'Y:\Projects\DropletJumpWedge\Repos_Data'
-rawdir = 'Y:\Projects\DropletJumpWedge\Repos_Data\RAW_Spotlight'
-datdir = 'Y:\Projects\DropletJumpWedge\Repos_Data\data'
+wrkdir = os.path.dirname(os.path.realpath('file_generator_Spotlight.py'))
+rawdir = os.path.join(wrkdir,'RAW_Spotlight')
+datdir = os.path.join(wrkdir,'data')
+#wrkdir = 'Y:\Projects\DropletJumpWedge\Repos_Data'
+#rawdir = 'Y:\Projects\DropletJumpWedge\Repos_Data\RAW_Spotlight'
+#datdir = 'Y:\Projects\DropletJumpWedge\Repos_Data\data'
 
 def read_files():
     os.chdir(wrkdir)
     files = os.listdir(wrkdir)
-    M = glob.glob(wrkdir+'\\*.txt')
+    M = glob.glob(os.path.join(wrkdir,'*.txt'))
     (filepathb, filenameb) = os.path.split( [s for s in M if s.endswith('back.txt')][0] )  # Back file
     back = open(filenameb,'r')                      # open files to read
     b = back.readlines()                            # read back lines into b, each line is a string
@@ -61,7 +63,7 @@ def append_to_metadata(bdata,b,fdata,f,filenameback,filenamefront):
     ILb = parameters_b[3][:-2].replace('o','.')
     ILf = parameters_f[3][:-2].replace('o','.')
     
-    l = open('Y:\Projects\DropletJumpWedge\Repos_Data\data\metadata.txt',"a")
+    l = open(os.path.join(datdir,'metadata.txt'),"a")
     metadata = filenameback[:5]+', '+angl+', '+vol+', '+ILf+', '+ILb+', '+scale+'\n'
     l.write(metadata) 
     l.close()
@@ -149,13 +151,15 @@ def process_data(bdata,fdata,ILb,ILf,angl,filenameback):
     
     gen_csv_file(time,s,s_b,s_f,filenameback)
 
-def gen_csv_file(time,s,s_b,s_f,filenameback):     
-    data_file = wrkdir+'\\'+filenameback[:5]+'.csv' # filename for tracking data, desig. by drop #
+def gen_csv_file(time,s,s_b,s_f,filenameback): 
+    data_file = os.path.join(wrkdir,filenameback[:5]+'.csv')   
+#    data_file = wrkdir+'\\'+filenameback[:5]+'.csv' # filename for tracking data, desig. by drop #
     f = open(data_file,"w+")                    # creates new file in working folder, and close
     f.close()
     
-    olddir = wrkdir+'\\'+filenameback[:5]+'.csv'              # current file location
-    newdir = wrkdir+'\\'+'data'+'\\'+filenameback[:5]+'.csv'  # new file location
+    olddir = os.path.join(wrkdir,filenameback[:5]+'.csv')              # current file location
+    newdir = os.path.join(wrkdir,'data',filenameback[:5]+'.csv')
+#    newdir = wrkdir+'\\'+'data'+'\\'+filenameback[:5]+'.csv'  # new file location
     os.rename(olddir,newdir) # moves processed data folder to 'data' folder
          
     f = open(newdir,"w+")

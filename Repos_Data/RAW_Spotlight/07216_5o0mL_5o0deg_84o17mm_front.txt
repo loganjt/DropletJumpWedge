@@ -5,9 +5,7 @@ Aoi 1: WholeImage
 Aoi 2: ThresholdTracking
 _________________________________________________________________________________
 |     Time     |                filename                | x (aoi 2) | y (aoi 2) |
-
-      0.01668   Drop_07216_DropletJumpWedge_water_Volume_5mL_5o0deg_FullAngle_CapHeight_InitialLocation_dry_1_Frame 006    207.29627    16.13898  
-      0.03337   Drop_07216_DropletJumpWedge_water_Volume_5mL_5o0deg_FullAngle_CapHeight_InitialLocation_dry_1_Frame 007    206.22034    16.13898  
+  
       0.05005   Drop_07216_DropletJumpWedge_water_Volume_5mL_5o0deg_FullAngle_CapHeight_InitialLocation_dry_1_Frame 008    206.57898    16.13898  
       0.06673   Drop_07216_DropletJumpWedge_water_Volume_5mL_5o0deg_FullAngle_CapHeight_InitialLocation_dry_1_Frame 009    205.32373    16.13898  
       0.08342   Drop_07216_DropletJumpWedge_water_Volume_5mL_5o0deg_FullAngle_CapHeight_InitialLocation_dry_1_Frame 010    205.14441    16.13898  
